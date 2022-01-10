@@ -1,0 +1,61 @@
+{
+  "name": "uocnv/momo-payment",
+  "description": "A pakage connect with momo",
+  "keywords": [
+    "uocnv",
+    "momo-payment"
+  ],
+  "homepage": "https://github.com/uocnv/momo-payment",
+  "license": "MIT",
+  "type": "library",
+  "authors": [
+    {
+      "name": "Nguyen Van Uoc",
+      "email": "uocnv.soict.hust@gmail.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": "^7.4|^8.0",
+    "illuminate/support": "~5.0|^6.0|^7.0",
+    "phpseclib/phpseclib": "^2",
+    "monolog/monolog": "*",
+    "bramus/monolog-colored-line-formatter": "^3.0",
+    "ext-json": "*",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^5.0",
+    "phpunit/phpunit": "^8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Uocnv\\MomoPayment\\": "src"
+    },
+    "files": [
+      "src/helper.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Uocnv\\MomoPayment\\Tests\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit",
+    "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Uocnv\\MomoPayment\\MomoPaymentServiceProvider"
+      ],
+      "aliases": {
+        "MomoPayment": "Uocnv\\MomoPayment\\MomoPaymentFacade"
+      }
+    }
+  }
+}
