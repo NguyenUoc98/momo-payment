@@ -2,10 +2,8 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/uocnv/momo-payment.svg?style=flat-square)](https://packagist.org/packages/uocnv/momo-payment)
 [![Total Downloads](https://img.shields.io/packagist/dt/uocnv/momo-payment.svg?style=flat-square)](https://packagist.org/packages/uocnv/momo-payment)
-![GitHub Actions](https://github.com/uocnv/momo-payment/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+This is a package that helps connect to Momo service with All in one payment method.
 
 ## Installation
 
@@ -17,23 +15,55 @@ composer require uocnv/momo-payment
 
 ## Usage
 
-```php
-// Usage description here
-```
+- Publish config:
 
-### Testing
+    ```php
+    php artisan vendor:publish --provider="Uocnv\MomoPayment\MomoPaymentServiceProvider" --tag="config"
+    ```
 
-```bash
-composer test
-```
+- You can start with:
 
-### Changelog
+    ```php
+    $momoPayment = new MomoPayment(config('momo-payment.environment'));
+    ```
 
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
+- Create a Capture request and receive response with redirect payment url:
 
-## Contributing
+    ```php
+    $response = $momoPayment->createRequest(array $data);
+    $paymentUrl = $response->getPayUrl();
+    ```
 
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+    *More information in: [Config Api](https://developers.momo.vn/v2/#/docs/aiov2/?id=l%e1%ba%a5y-ph%c6%b0%c6%a1ng-th%e1%bb%a9c-thanh-to%c3%a1n)*
+
+- Processing payment results:
+
+    You can check signature from response
+
+    ```php
+    $response     = $momoPayment->checkResult($request->all());
+    $errorCode    = $response->getErrorCode();
+    $localMessage = $response->getLocalMessage();
+    $transId      = $response->getTransId();
+    $responseTime = $response->getResponseTime();
+    $orderId      = $response->getOrderId();
+    $orderInfo    = $response->getOrderInfo();
+    $amount       = $response->getAmount();
+    ```
+
+    *More information in: [Processing payment results](https://developers.momo.vn/v2/#/docs/aiov2/?id=x%e1%bb%ad-l%c3%bd-k%e1%ba%bft-qu%e1%ba%a3-thanh-to%c3%a1n)*
+
+- Check transaction status:
+
+    ```php
+    $response = $momoPayment->checkStatus($orderId, $requestId);
+    $errorCode    = $response->getErrorCode();
+    $localMessage = $response->getLocalMessage();
+    $transId      = $response->getTransId();
+    $orderId      = $response->getOrderId();
+    $amount       = $response->getAmount();
+    ```
+  *More information in: [Check transaction status](https://developers.momo.vn/v2/#/docs/aiov2/?id=ki%e1%bb%83m-tra-tr%e1%ba%a1ng-th%c3%a1i-giao-d%e1%bb%8bch)*
 
 ### Security
 
